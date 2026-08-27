@@ -1,0 +1,27 @@
+2026-08-27  ICBR RC-wise susceptibility: low-denominator cells
+
+WHAT I DID
+Parsed all six pathogen sheets of ICBR_RC_Wise_Susceptibility__2_.xlsx
+and listed every cell with fewer than 10 isolates tested.
+Output: ICBR_low_N_cells.xlsx
+
+RESULT
+3,276 cells total. 260 have N < 10 and are excluded.
+
+DECISIONS
+- Exclude the individual cell where N < 10. Keep the centre, year and
+  pathogen otherwise.
+  Reason: excluding whole centres would systematically remove newer
+  centres, which are mostly in under-represented regions.
+- N is the denominator printed inside the cell (isolates tested against
+  that antibiotic at that centre), not the column-header N, which is
+  the national total for the year.
+
+LIMITATION
+Low-N cells cluster in smaller centres (RIMS Imphal, Apollo Chennai,
+Artemis Gurugram) and rarer organisms (P. mirabilis, E. cloacae).
+Exclusion therefore thins the northeast more than Maharashtra or Delhi.
+
+OPEN
+RC number to institution key is published only in the 2021 report
+(Figure (i), p.5). Institution names for other years are provisional.

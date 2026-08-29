@@ -37,4 +37,7 @@ RESULT
 Output: ENA Advanced Search 2.tsv, 46683 runs parsed. 
 Output: Human Gut Metagenome Run Selector SRA.csv, 7774 runs parsed; Wastewater Metagenome Run Selector SRA.csv, 3601 runs parsed.
 
+Decisions
+DDBJ runs were omitted because runs are shared between NCBI SRA, ENA and DDBJ daily and tests of merging all three databases into a single dataframe of metagenome samples yield zero extra samples compared to merging just NCBI SRA and ENA. DDBJ search did not have consistent or detailed enough properties in fields to identify runs that fit the query criteria.   
+
 

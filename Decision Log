@@ -25,3 +25,16 @@ Exclusion therefore thins the northeast more than Maharashtra or Delhi.
 OPEN
 RC number to institution key is published only in the 2021 report
 (Figure (i), p.5). Institution names for other years are provisional.
+
+
+2026-08-29 Metagenome Metadata Parsing from NCBI SRA and ENA
+
+WHAT I DID
+Parsed NCBI and ENA databases for metagenomes using SRA Advanced Search with results then sent to SRA Run Selector and ENA Advanced Search. 
+ENA Advanced Search Query: Data Type - Raw Reads. country="India" AND library_strategy="wgs" AND instrument_platform="illumina" AND first_public>2010-01-01 AND first_public<2026-06-01
+Fields Included: run_accession, sample_accession, experiment_title, country, library_strategy, center_name, location, collection_date, first_public, tax_id, lat, lon, scientific_name. 
+RESULT
+Output: ENA Advanced Search 2.tsv, 46683 runs parsed. 
+Output: Human Gut Metagenome Run Selector SRA.csv, 7774 runs parsed; Wastewater Metagenome Run Selector SRA.csv, 3601 runs parsed.
+
+

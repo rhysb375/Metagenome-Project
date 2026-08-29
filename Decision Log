@@ -33,6 +33,9 @@ WHAT I DID
 Parsed NCBI and ENA databases for metagenomes using SRA Advanced Search with results then sent to SRA Run Selector and ENA Advanced Search. 
 ENA Advanced Search Query: Data Type - Raw Reads. country="India" AND library_strategy="wgs" AND instrument_platform="illumina" AND first_public>2010-01-01 AND first_public<2026-06-01
 Fields Included: run_accession, sample_accession, experiment_title, country, library_strategy, center_name, location, collection_date, first_public, tax_id, lat, lon, scientific_name. 
+
+NCBI SRA Advanced Search Query: "India"[All Fields] AND "METAGENOMIC"[Source] AND "WGS"[Strategy] AND "ILLUMINA"[Platform] AND ("2010/01/01"[PDAT] : "2026/06/01"[PDAT]).
+Prior to sending runs that satisfy the queries to Run Selector to download the metadata, runs were filtered using the NCBI taxonomy IDs 408170 and 527639 for human gut metagenomes and wastewater metagenomes respectively.
 RESULT
 Output: ENA Advanced Search 2.tsv, 46683 runs parsed. 
 Output: Human Gut Metagenome Run Selector SRA.csv, 7774 runs parsed; Wastewater Metagenome Run Selector SRA.csv, 3601 runs parsed.

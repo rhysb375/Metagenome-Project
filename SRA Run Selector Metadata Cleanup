@@ -1,0 +1,243 @@
+# =============================================================================
+# sra_metagenomes.py
+#
+# What this does, in one sentence: takes two SRA downloads (gut and
+# wastewater), sticks them together, marks the rows you don't want without
+# deleting them, digs the location out of whichever column happens to hold it,
+# works out the Indian state, and prints the tables you needed for reproducibility: A table
+# with all rows flagged with reasons why they were excluded, an attrition table and a cleaned analysis set for downstream work such as read based analysis.
+# TO USE: put this file in the same folder as your two CSVs and run it (or within the same virtual environment in PyCharm).
+#
+# Nothing is deleted. A row that fails a check gets a reason
+# written next to it and stays in the table, so you can always count it and
+# always change your mind later. THIS NEEDS TO BE IMPROVED FOR A WIDER AUDIENCE.
+# =============================================================================
+
+import pandas as pd
+
+# Which file holds which kind of sample.
+FILES = {
+    "gut": "Human Gut Metagenome Run Selector SRA.csv",
+    "wastewater": "Wastewater Metagenome Run Selector SRA.csv",
+}
+
+# =============================================================================
+# STEP 1 - LOAD BOTH FILES
+# =============================================================================
+# Two settings that matter:
+# dtype=str              means "treat everything as text", so accession numbers
+#                        and dates don't get turned into numbers.
+# keep_default_na=False  means "don't turn the words NA / none / null into
+#                        blanks". People typed those on purpose and we want to
+#                        be able to count them.
+READ = dict(dtype=str, keep_default_na=False, na_values=[])
+
+tables = []                                  # an empty list to collect them in
+
+for compartment, path in FILES.items():      # do the same thing to each file
+    d = pd.read_csv(path, **READ)
+    # These two columns are labels we add ourselves. Once the files are stacked
+    # together nothing tells you which one a row came from, so we tag them NOW
+    # while they are still separate. This is called provenance.
+    d["compartment"] = compartment           # "gut" or "wastewater"
+    d["source_file"] = path                  # the file it came out of
+    tables.append(d)
+
+
+# =============================================================================
+# STEP 2 - STACK THEM INTO ONE TABLE
+# =============================================================================
+# concat = put tables on top of each other, so you get more ROWS.
+# The two files don't have identical columns. Any column missing
+# from one file just comes out blank for those rows.
+df = pd.concat(tables, ignore_index=True)    # ignore_index renumbers rows 0,1,2...
+df = df.fillna("")                           # turn any leftover gaps into blanks
+
+# Somewhere to keep the row counts as we go. This becomes the attrition table.
+steps = []
+def record(label, table):
+    """Write down how much data is left at this point."""
+    steps.append({
+        "step": label,
+        "runs": table["Run"].nunique(),              # nunique = how many different ones
+        "samples": table["BioSample"].nunique(),
+        "studies": table["BioProject"].nunique(),
+    })
+
+record("1. both files loaded", df)
+
+# =============================================================================
+# STEP 3 - FIND THE LOCATION, WHEREVER IT IS HIDING
+# =============================================================================
+# SRA scatters location information
+# across a dozen different columns, and different studies fill in different
+# ones. If you only read one column you miss most of it.
+#
+# So: go down this list in order, and for each row take the FIRST column that
+# actually has something in it. Then write down WHICH column it came from, so
+# you can tell strong evidence from weak evidence later.
+#
+# The list is in order of trustworthiness. A field describing the sample's own
+# location beats one describing the sequencing centre.
+
+PLACE_COLUMNS = [
+    "geographic_location_(region_and_locality)",   # best: names the actual region
+    "geo_loc_name",                                # e.g. "India: Chennai"
+    "geographic_location_(country_and/or_sea)",
+    "collection_site",
+    "Collectionsite",
+    "name_of_the_sampling_site",
+    "isolation_source",
+    "env_local_scale",
+    "sequencing_site",                             # weakest: where it was sequenced,
+]                                                  # not where it was collected
+# PLACE_COLUMNS COULD BE AN ISSUE FOR SCIENTIFIC INTEGRITY. NO SAMPLES TAKE FROM "collection_site" or below in analysis_set.csv currently.
+df["place_text"] = ""        # the location text we end up using
+df["place_source"] = ""      # which column it came from
+
+for col in PLACE_COLUMNS:
+    if col not in df.columns:        # skip columns this file doesn't have
+        continue
+    value = df[col].fillna("").str.strip()
+    # Only fill in rows that are still empty. So the first column in the list
+    # wins, and nothing further down can overwrite it.
+    fill = (df["place_text"] == "") & (value != "") & (value.str.lower() != "missing")
+    df.loc[fill, "place_text"] = value[fill]
+    df.loc[fill, "place_source"] = col
+
+print("\nWhere the location text came from:")
+print(df["place_source"].replace("", "(nothing anywhere)").value_counts())
+
+# --- Same idea for coordinates ---
+# SRA keeps them in two different places: one text field like "13.08 N 80.27 E",
+# and a separate pair of latitude/longitude columns. Check both.
+df["lat"] = ""
+df["lon"] = ""
+
+if "lat_lon" in df.columns:
+    # str.extract pulls out the bit of text matching the pattern in brackets.
+    df["lat"] = df["lat_lon"].str.extract(r"([\d.]+)\s*[NS]", expand=False).fillna("")
+    df["lon"] = df["lat_lon"].str.extract(r"([\d.]+)\s*[EW]", expand=False).fillna("")
+
+for src, target in [("geographic_location_(latitude)", "lat"), # tuple unpacking
+                    ("geographic_location_(longitude)", "lon")]:
+    if src in df.columns:
+        value = df[src].fillna("").str.strip() # turns columns "geographic_location_(latitude)/(longitude)
+        # into empty strings if empty.
+        fill = (df[target] == "") & (value != "")     # fills the "target" column ("lat" or "lon") where "target" is empty
+        # but src columns are not empty.
+        df.loc[fill, target] = value[fill] # fills target columns with coordinates.
+
+df["has_coordinates"] = df["lat"] != ""
+
+# =============================================================================
+# STEP 4 - MARK THE ROWS WE DON'T WANT (without deleting them)
+# =============================================================================
+df["excluded_reason"] = ""      # blank means "this row is still fine"
+
+# --- Indian samples only ---
+# The country column is already split out by SRA, so we just compare it.
+country = df["geo_loc_name_country"].str.strip().str.lower()
+df.loc[country != "india", "excluded_reason"] = "not India"
+
+# --- Shotgun only ---
+# AMPLICON is 16S. It tells you which bacteria are there, not which genes, so
+# it can't be used for resistance.
+df.loc[(df["Assay Type"] != "WGS") & (df["excluded_reason"] == ""),
+       "excluded_reason"] = "not WGS"
+
+# --- Illumina only, so the sequencing chemistry is the same throughout ---
+df.loc[(df["Platform"].str.upper() != "ILLUMINA") & (df["excluded_reason"] == ""),
+       "excluded_reason"] = "not Illumina"
+
+# --- BioProject exclusion code ---
+df.loc[(df["BioProject"] == "PRJEB102331") & (df["excluded_reason"] == ""),
+    "excluded_reason"] = "Enriched for Viromes"
+
+print("\nWhy rows were excluded:")
+print(df["excluded_reason"].replace("", "(kept)").value_counts())
+
+# =============================================================================
+# STEP 5 - WORK OUT THE INDIAN STATE
+# =============================================================================
+# Important: this is us GUESSING from text. The database never says "Kerala".
+# So it gets its own column recording how we worked it out.
+#
+# The patterns:  |    means OR
+#                \b   means "edge of a word", so \bgoa\b matches "Goa" but not
+#                     "Goalpara", which is in Assam
+#                \s*  means "any amount of space", catching both "TamilNadu"
+#                     and "Tamil Nadu"
+
+STATES = {
+    "Andhra Pradesh": r"andhra|visakhapatnam|vijayawada|tirupati|nellore",
+    "Arunachal Pradesh": r"arunachal|itanagar",
+    "Assam": r"\bassam\b|guwahati|dibrugarh|goalpara",
+    "Bihar": r"\bbihar\b|patna|sheikhpura",
+    "Chhattisgarh": r"chhattisgarh|chattisgarh|raipur",
+    "Delhi": r"\bdelhi\b",
+    "Goa": r"\bgoa\b|panaji",
+    "Gujarat": r"gujarat|ahmedabad|surat|vadodara|rajkot",
+    "Haryana": r"haryana|gurgaon|gurugram|faridabad|karnal|hisar",
+    "Himachal Pradesh": r"himachal|shimla|palampur|manali",
+    "Jammu and Kashmir": r"kashmir|srinagar|\bjammu\b",
+    "Jharkhand": r"jharkhand|ranchi|jamshedpur",
+    "Karnataka": r"karnataka|bangalore|bengaluru|mysore|mysuru|mangalore|manipal|udupi",
+    "Kerala": r"\bkerala\b|kochi|cochin|trivandrum|thiruvananthapuram|calicut|kozhikode|kasaragod|thrissur",
+    "Ladakh": r"\bladakh\b|\bleh\b",
+    "Madhya Pradesh": r"madhya\s*pradesh|bhopal|indore|jabalpur",
+    "Maharashtra": r"maharashtra|mumbai|bombay|\bpune\b|nagpur|nashik|nasik|aurangabad",
+    "Manipur": r"manipur|imphal",
+    "Meghalaya": r"meghalaya|shillong",
+    "Mizoram": r"mizoram|aizawl",
+    "Nagaland": r"nagaland|kohima|dimapur",
+    "Odisha": r"odisha|orissa|bhubaneswar|cuttack",
+    "Puducherry": r"puducherry|pondicherry",
+    "Punjab": r"\bpunjab\b|ludhiana|amritsar|chandigarh",
+    "Rajasthan": r"rajasthan|jaipur|jodhpur|udaipur",
+    "Sikkim": r"\bsikkim\b|gangtok",
+    "Tamil Nadu": r"tamil\s*nadu|chennai|madras|coimbatore|madurai|vellore|tiruvallur",
+    "Telangana": r"telangana|hyderabad|warangal|icrisat",
+    "Tripura": r"tripura|agartala",
+    "Uttar Pradesh": r"uttar\s*pradesh|lucknow|kanpur|varanasi|\bagra\b|\bnoida\b",
+    "Uttarakhand": r"uttarakhand|dehradun|haridwar|rishikesh",
+    "West Bengal": r"west\s*bengal|\bbengal\b|kolkata|calcutta|darjeeling",
+}
+
+df["state"] = ""                      # empty column to fill in
+df["state_evidence"] = "unresolved"   # how it was worked out
+
+text = df["place_text"].str.lower()   # search the location text built in step 3
+
+for state, pattern in STATES.items():             # one state at a time
+    hit = text.str.contains(pattern, regex=True, na=False)
+    new = hit & (df["state"] == "")                # only fill rows still empty,
+    df.loc[new, "state"] = state                   # so the first match wins and
+    df.loc[new, "state_evidence"] = "text_match"   # nothing gets overwritten
+
+kept = df[df["excluded_reason"] == ""]             # the rows that survived
+print("\nLocation text that matched no state. Add patterns until this is only 'India':")
+print(kept.loc[kept["state"] == "", "place_text"].replace("", "(blank)").value_counts().head(20)) # tells you
+# what cities or states to add to the regex dictionary - will probably not need this soon.
+# =============================================================================
+# STEP 6 - ATTRITION TABLE NUMBERS
+# =============================================================================
+
+record("2. after excluding", kept)
+record("3. state worked out", kept[kept["state"] != ""])
+record("4. has coordinates", kept[kept["has_coordinates"]])
+
+attrition = pd.DataFrame(steps)
+print("\nATTRITION TABLE FOR METHODS")
+print(attrition.to_string(index=False))
+
+# =============================================================================
+# STEP 7 - SAVE
+# =============================================================================
+# index=False stops pandas adding a pointless extra numbering column.
+df.to_csv("all_rows_flagged.tsv", sep="\t", index=False)        # everything, with reasons
+kept.to_csv("analysis_set.tsv", sep="\t", index=False)          # just the good rows
+attrition.to_csv("attrition_table.csv", index=False)            # the counts
+
+print(f"\npandas version: {pd.__version__}") # tells you what version of Pandas for methods writing
+print("Saved: all_rows_flagged.tsv, analysis_set.tsv, attrition_table.csv")

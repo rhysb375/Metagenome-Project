@@ -70,6 +70,8 @@ Lakshadweep, these places were added in the following form in the regex dictiona
     "Lakshadweep": r"lakshadweep|kavaratti"
     "Chandigarh": r"chandigarh"
 Chandigarh was also removed from the Punjab key : value pair as it is its own union territory.
+The regex dictionary and geoJSON file now date to 26 Jan 2020 when the union territories of Dadra and Nagar Haveli and Daman and Diu were merged into a single union territory in India. 
+
 OPEN
 One outlier needs to be fixed: 
 "India: Hyderabad, Andhra Pradesh"

@@ -106,3 +106,40 @@ Trivandrum -> Kerala
 Cochin -> Kerala
 Allahabad -> Uttar Pradesh
 Faizabad -> Uttar Pradesh
+
+2026-09-14 Analysis set cleaning and project-level review
+
+WHAT I DID
+Reviewed analysis_set for confounders beyond geography. Found that
+library enrichment and study population are not currently captured.
+
+REGEX DICTIONARY UPDATES
+Added towns that did not resolve in "state": Gandhinagar, Satara, Uran,
+Chittorgarh, Jind, Rohtak, Hajipur/Hazipur, Kheda.
+Added city renames: Allahabad/Prayagraj, Faizabad/Ayodhya.
+
+BIOPROJECT REMOVALS
+PRJEB87273 - Enriched for viromes. Lost 678 runs from "wastewater" compartment. 
+Considering: PRJNA981497, only location data is "India" with no coordinates. May have location in paper. 
+
+NEW: PROJECT-LEVEL REVIEW TABLE
+The BioProject removals prompt the building of project_review.csv, one row per BioProject (42 total), with
+run count, compartment, library selection and states.
+To be completed by hand with: study type, study population,
+whether antibiotic exposure was excluded, include yes/no, reason.
+
+DECISION ON DISEASE COHORTS
+Not excluding them. Almost every public gut metagenome comes from
+a study of something, and "healthy controls" are also a selected
+group. Excluding would leave too few samples and introduce its
+own bias.
+Instead: record study_population as a covariate, cross-tabulate
+against state to check whether it is balanced, and run a
+healthy-only sensitivity analysis.
+
+CONFOUNDER I AM MOST WORRIED ABOUT
+Recent antibiotic exposure. It affects ARG abundance far more
+than disease state, and it is almost never in SRA metadata. Only
+recoverable from the paper. Dixit et al. excluded patients with
+antibiotics within 8 weeks; most studies do not say.
+Added as a column in project_review.

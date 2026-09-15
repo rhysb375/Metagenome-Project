@@ -137,9 +137,27 @@ Instead: record study_population as a covariate, cross-tabulate
 against state to check whether it is balanced, and run a
 healthy-only sensitivity analysis.
 
-CONFOUNDER I AM MOST WORRIED ABOUT
+CONFOUNDER
 Recent antibiotic exposure. It affects ARG abundance far more
 than disease state, and it is almost never in SRA metadata. Only
 recoverable from the paper. Dixit et al. excluded patients with
 antibiotics within 8 weeks; most studies do not say.
 Added as a column in project_review.
+
+2026-09-15 Updating SRA search query.
+WHAT I DID
+On the SRA Advanced search website, manually checked only fastq file types to eliminate bam and cram for downstream compatibility in fARGene ARG detection that only takes fastq. Files lost with this decision, using this search query (("India"[All Fields] OR "Andaman"[All Fields] OR "Nicobar"[All Fields] OR "Andhra Pradesh"[All Fields] 
+OR "Arunachal Pradesh"[All Fields] OR "Assam"[All Fields] OR "Bihar"[All Fields] OR "Chandigarh"[All Fields] OR
+"Chhattisgarh"[All Fields] OR "Dadra"[All Fields] OR "Nagar Haveli"[All Fields] OR "Daman"[All Fields] OR "Diu"[All Fields] OR
+"Delhi"[All Fields] OR "Goa"[All Fields] OR "Gujarat"[All Fields] OR "Haryana"[All Fields] OR "Himachal Pradesh"[All Fields] OR
+"Jammu"[All Fields] OR "Kashmir"[All Fields] OR "Jharkhand"[All Fields] OR "Karnataka"[All Fields] OR "Kerala"[All Fields] OR
+"Ladakh"[All Fields] OR "Lakshadweep"[All Fields] OR "Madhya Pradesh"[All Fields] OR "Maharashtra"[All Fields] OR "Manipur"[All Fields] OR
+"Meghalaya"[All Fields] OR "Mizoram"[All Fields] OR "Nagaland"[All Fields] OR "Odisha"[All Fields] OR "Orissa"[All Fields] OR "Puducherry"[All Fields] OR
+"Pondicherry"[All Fields] OR "Punjab"[All Fields] OR "Rajasthan"[All Fields] OR "Sikkim"[All Fields] OR "Tamil Nadu"[All Fields] OR "Telangana"[All Fields] OR
+"Tripura"[All Fields] OR "Uttar Pradesh"[All Fields] OR "Uttarakhand"[All Fields] OR "Uttaranchal"[All Fields] OR "West Bengal"[All Fields]) 
+AND "METAGENOMIC"[Source] AND "WGS"[Strategy] AND "ILLUMINA"[Platform] AND ("2010/01/01"[PDAT] : "2026/06/01"[PDAT])): 
+BAM: 3
+CRAM: 25
+
+In sra_metagenomes.py, also filtered runs that used LibraryLayout: "SINGLE" for downstream compatibility with fARGene. 
+Runs lost: 5.

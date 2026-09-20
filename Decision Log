@@ -234,4 +234,6 @@ Duplicate deposit
 The same physical samples deposited under more than one accession receive double weight in analysis. Re-deposition generates new accessions, so accession-level deduplication does not detect it.
 
 Unclear — cannot assess
-Assigning a value where the source is silent converts an unknown into a datum. Because incomplete reporting is not randomly distributed across studies, the resulting error is systematic. Retaining a distinct category preserves this distinction and yields a quantifiable measure of reporting completeness.
+Assigning a value where the source is silent converts an unknown into a datum. 
+Because incomplete reporting is not randomly distributed across studies, the resulting error is systematic.
+Retaining a distinct category preserves this distinction and yields a quantifiable measure of reporting completeness.

@@ -171,46 +171,61 @@ compartments with disordered microbiomes in one way or another e.g gut dysbiosis
 
 Exclusion criteria (current and subject to change)
 Fraction-enriched (plasmidome/virome/eDNA)
-Wet-lab isolation of a sub-fraction of the community prior to sequencing. Resistance genes are disproportionately plasmid-borne, so plasmid isolation removes most of the denominator while retaining the numerator, inflating apparent ARG abundance by orders of magnitude. Viral fraction preparation excludes bacteria, which carry the large majority of ARGs, and deflates it correspondingly. In both cases the measured ratio reflects the preparation rather than the community.
+Wet-lab isolation of a sub-fraction of the community prior to sequencing. Resistance genes are disproportionately plasmid-borne, so plasmid isolation removes most of the denominator while retaining the numerator,
+inflating apparent ARG abundance by orders of magnitude.
+Viral fraction preparation excludes bacteria, which carry the large majority of ARGs, and deflates it correspondingly. In both cases the measured ratio reflects the preparation rather than the community.
 
 Amplified (MDA/WGA)
-Whole genome amplification prior to sequencing. Phi29-based rolling-circle amplification is substantially more efficient on small circular templates than on linear chromosomal fragments, producing partial enrichment for plasmids. Amplification is also non-uniform across the genome and generates chimeric sequences, so relative abundance estimates no longer correspond to template abundance in the original sample.
+Whole genome amplification prior to sequencing. Phi29-based rolling-circle amplification is substantially more efficient on small circular templates than on linear chromosomal fragments,
+producing partial enrichment for plasmids. Amplification is also non-uniform across the genome and generates chimeric sequences, 
+so relative abundance estimates no longer correspond to template abundance in the original sample.
 
 Culture enriched
-Growth on media prior to DNA extraction. Under 1% of environmental taxa are culturable on standard media, and differential growth rates further favour fast-growing Proteobacteria. The sequenced community is the output of a selection step rather than the sampled community. Antibiotic-containing media impose direct selection for the phenotype under study.
+Growth on media prior to DNA extraction. Under 1% of environmental taxa are culturable on standard media, and differential growth rates further favour fast-growing Proteobacteria.
+The sequenced community is the output of a selection step rather than the sampled community. Antibiotic-containing media impose direct selection for the phenotype under study.
 
 Lab manipulation
-Experimental dosing, spiking or incubation prior to analysis. Antimicrobial exposure increases resistance gene abundance by design, so using the endpoint as an observation of environmental resistance is circular.
+Experimental dosing, spiking or incubation prior to analysis. 
+Antimicrobial exposure increases resistance gene abundance by design, so using the endpoint as an observation of environmental resistance is circular.
 
 Non-representative setting — hospital sewer
-Sub-inhibitory antibiotic concentrations excreted by treated patients impose continuous selection within the drainage system, while patients simultaneously shed hospital-adapted organisms carrying acquired resistance. The resulting resistome characterises the facility, not its surrounding catchment.
+Sub-inhibitory antibiotic concentrations excreted by treated patients impose continuous selection within the drainage system, 
+while patients simultaneously shed hospital-adapted organisms carrying acquired resistance. The resulting resistome characterises the facility, not its surrounding catchment.
 
 Non-representative setting — pharmaceutical/industrial effluent
-Antibiotic concentrations in bulk-drug manufacturing effluent have been measured up to approximately 10⁶ times those of treated municipal sewage and substantially above minimum inhibitory concentrations for most taxa. The surviving community has passed through an extreme selective bottleneck and is not comparable to a population-level sample.
+Antibiotic concentrations in bulk-drug manufacturing effluent have been measured up to approximately 10⁶ times those of treated municipal sewage and substantially above minimum inhibitory concentrations
+for most taxa. The surviving community has passed through an extreme selective bottleneck and is not comparable to a population-level sample.
 
 Non-representative setting — single building or institution
-Closed populations share water, food and transmission networks, homogenising circulating strains and collapsing within-site variation. The dominant strain reflects local circulation rather than any regional signal.
+Closed populations share water, food and transmission networks, homogenising circulating strains and collapsing within-site variation. 
+The dominant strain reflects local circulation rather than any regional signal.
 
 Non-representative population — hospitalised/ICU
-Antibiotic therapy depletes susceptible gut commensals and releases niche space for resistant taxa; nosocomial cross-transmission adds hospital-adapted strains. Both processes are properties of the care setting rather than the source population.
+Antibiotic therapy depletes susceptible gut commensals and releases niche space for resistant taxa; 
+nosocomial cross-transmission adds hospital-adapted strains. Both processes are properties of the care setting rather than the source population.
 
 Non-representative population — disease cohort
-Enteric disease reduces gut diversity and permits Enterobacteriaceae expansion. This family carries a disproportionate share of clinically significant resistance determinants, so apparent resistance rises through compositional shift independent of antimicrobial exposure.
+Enteric disease reduces gut diversity and permits Enterobacteriaceae expansion. 
+This family carries a disproportionate share of clinically significant resistance determinants, so apparent resistance rises through compositional shift independent of antimicrobial exposure.
 
 Non-representative population — occupational group
 Cohorts recruited for occupational contact with animals or healthcare environments are selected on exposure and therefore sample the upper tail of the carriage distribution by design.
 
 Non-representative population — infants only
-The developing infant gut is low-diversity and Proteobacteria-dominated during the first one to two years. Proteobacteria carry high intrinsic and acquired resistance, so infant resistomes are elevated by developmental stage and decline with maturation. Delivery mode and feeding regime modify the trajectory further.
+The developing infant gut is low-diversity and Proteobacteria-dominated during the first one to two years. 
+Proteobacteria carry high intrinsic and acquired resistance, so infant resistomes are elevated by developmental stage and decline with maturation. Delivery mode (c-section) and feeding regime (bottlefed)
+modify the trajectory further.
 
 Simple pseudoreplication
-The unit of replication does not match the unit of inference. Where inference concerns sites, subsamples from a single site estimate within-site rather than between-site variance, producing understated standard errors and overstated confidence. Hurlbert (1984).
+The unit of replication does not match the unit of inference. Where inference concerns sites, 
+subsamples from a single site estimate within-site rather than between-site variance, producing understated standard errors and overstated confidence. Hurlbert (1984).
 
 Sacrificial pseudoreplication
 Physical pooling of replicates prior to sequencing averages the signal and eliminates the variance component required for inference. The loss is irreversible.
 
 Temporal pseudoreplication
-Repeated sampling of a single system yields autocorrelated observations. Treating them as independent inflates the effective sample size; information content approximates the number of sites rather than the number of timepoints.
+Repeated sampling of a single system yields autocorrelated observations. Treating them as independent inflates the effective sample size; 
+information content approximates the number of sites rather than the number of timepoints.
 
 Spatially clustered
 Proximate sites share catchment, climate, water supply and prescribing patterns, and are therefore partially redundant. Effective sample size is materially below the nominal site count.

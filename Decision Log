@@ -263,8 +263,23 @@ Of those, only Telangana has metagenome data, so it’s the only one that reache
 
 2026-10-30 Dealing with BioProject filtering
 Decided on much more lenient filtering - only filtered out BioProjects on these grounds: 
-- Studies filtered for viromes
-- Used whoel genome amplification 
+Fraction-enriched (plasmidome/virome/eDNA)
+Wet-lab isolation of a sub-fraction of the community prior to sequencing. Resistance genes are disproportionately plasmid-borne, so plasmid isolation removes most of the denominator while retaining the numerator,
+inflating apparent ARG abundance by orders of magnitude.
+Viral fraction preparation excludes bacteria, which carry the large majority of ARGs, and deflates it correspondingly. In both cases the measured ratio reflects the preparation rather than the community.
+
+Amplified (MDA/WGA)
+Whole genome amplification prior to sequencing. Phi29-based rolling-circle amplification is substantially more efficient on small circular templates than on linear chromosomal fragments,
+producing partial enrichment for plasmids. Amplification is also non-uniform across the genome and generates chimeric sequences, 
+so relative abundance estimates no longer correspond to template abundance in the original sample.
+
+Culture enriched
+Growth on media prior to DNA extraction. Under 1% of environmental taxa are culturable on standard media, and differential growth rates further favour fast-growing Proteobacteria.
+The sequenced community is the output of a selection step rather than the sampled community. Antibiotic-containing media impose direct selection for the phenotype under study.
+
+Lab manipulation
+Experimental dosing, spiking or incubation prior to analysis. 
+Antimicrobial exposure increases resistance gene abundance by design, so using the endpoint as an observation of environmental resistance is circular.
 
 Also looked for Checksums through API calls to see if there was direct deposition of some BioProjects into others as stated in some BioProject research papers - no duplicated checksums MD5 found but this does not account for
 resequenced or recompressed FASTQ files.
@@ -302,11 +317,11 @@ Means: total livestock head per person. Source: 19th (2012) and 20th (2019) Live
 
 pct_population_affected
 
-Means: percentage of the state population recorded as affected by flooding per year. Source: EM-DAT international disaster database. (Note: the earlier coverage matrix lists a CWC flood damage table as an alternative — EM-DAT is what is in the final file.) How calculated: state identified from EM-DAT's structured GADM Admin Units field rather than its free-text Location column — GADM IDs take the form IND.<n>.<m>_1 and <n> indexes states alphabetically. Key decision: EM-DAT reports one "Total Affected" figure per event even when a flood hits ten states. Copying it to every state produced impossible values (Nagaland at 1088% of its population). The affected count is therefore split between the states hit, in proportion to their populations. No row now exceeds 100%. Zero-fill: states absent from EM-DAT are 0, not missing — no recorded flood event is a real zero.
+Means: percentage of the state population recorded as affected by flooding per year. Source: EM-DAT international disaster database. How calculated: state identified from EM-DAT's structured GADM Admin Units field rather than its free-text Location column — GADM IDs take the form IND.<n>.<m>_1 and <n> indexes states alphabetically. Key decision: EM-DAT reports one "Total Affected" figure per event even when a flood hits ten states. Copying it to every state produced impossible values (Nagaland at 1088% of its population). The affected count is therefore split between the states hit, in proportion to their populations. No row now exceeds 100%. Zero-fill: states absent from EM-DAT are 0, not missing.
 
 infectious_pct_of_certified_deaths
 
-Means: deaths from "Certain Infectious and Parasitic Diseases" as a percentage of that state's medically certified deaths. Source: Medical Certification of Cause of Death (MCCD) annual reports, Statement 3.6, 2015–2022 (8 reports). Why a share and not a rate: only ~22.5% of Indian deaths are medically certified, and coverage ranges from Bihar (3.4%) to Goa and Manipur (100%). Infectious deaths per head of population would mostly measure certification coverage. Taking the share of a state's own certified deaths cancels most of that out. Why the column is found, not hard-coded: Statement 3.6 lists cause groups in rank order, and infectious disease moves between years (2nd in 2019, 4th in 2020–21, 3rd in 2022); the number of groups also changes. The parser locates the right column each year by matching the report's own stated national figure. Correction made: the 2018 column was initially wrong (Assam read 5.9 against 26.3/27.2/25.7 in adjacent years). Fixed; adjacent-year correlations are now +0.67 to +0.94. Replaces: GBD modelled infectious-disease estimates, which were dropped because a modelled variable cannot serve as an independent measurement. Missing: Jammu & Kashmir (not reported).
+Means: deaths from "Certain Infectious and Parasitic Diseases" as a percentage of that state's medically certified deaths. Source: Medical Certification of Cause of Death (MCCD) annual reports, Statement 3.6, 2015–2022 (8 reports). Why a share and not a rate: only ~22.5% of Indian deaths are medically certified, and coverage ranges from Bihar (3.4%) to Goa and Manipur (100%). Infectious deaths per head of population would mostly measure certification coverage. Taking the share of a state's own certified deaths cancels most of that out. Replaces: GBD modelled infectious-disease estimates, which were dropped because a modelled variable cannot serve as an independent measurement. Missing: Jammu & Kashmir (not reported).
 
 tourism_per_person
 

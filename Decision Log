@@ -294,7 +294,7 @@ Means: annual mean ambient PM2.5 concentration, µg/m³. Source: UrbanEmissions 
 
 poor_sanitation_pct
 
-Means: percentage of households without an improved sanitation facility. Source: National Family Health Survey state factsheets, round 4 (fieldwork 2015–16) and round 5 (fieldwork 2019–21). How calculated: NFHS-4 assigned to 2016, NFHS-5 to 2020, then linearly interpolated between them and carried forward/backward to cover 2015–2022. Known issue, corrected: the government compendium table had its columns swapped. Detected by arithmetic impossibility, confirmed against the official compendium, and proven by population-weighting (corrected → 69.4%, matching the official 70.2%; as-printed → 48.3%, matching NFHS-4's 48.5%). Driver note: the 2016→2020 change tracks Swachh Bharat Mission rollout, not urbanisation (r = −0.54 with urban %).
+Means: percentage of households without an improved sanitation facility (original value was % households with improved sanitation facility, so percentage we used was 100 - X). Source: National Family Health Survey state factsheets, round 4 (fieldwork 2015–16) and round 5 (fieldwork 2019–21). How calculated: NFHS-4 assigned to 2016, NFHS-5 to 2020, then linearly interpolated between them and carried forward/backward to cover 2015–2022.  
 
 livestock_per_capita
 
@@ -312,7 +312,7 @@ tourism_per_person
 
 Means: domestic tourist visits per resident per year. Dimensionless. Source: RBI Handbook of Statistics on Indian States, Table 13, 2011–2024. How calculated: annual domestic tourist visits divided by state population. Excludes: foreign tourist arrivals.
 
-urban_pct_2011_2024
+urban_pct_2015_2022
 
 Means: percentage of the state population living in urban areas. Source: official population projections, 2011–2036. Validation: this variable was used as the hold-out test for whether interpolating census variables is acceptable, since it has an annual series.
 

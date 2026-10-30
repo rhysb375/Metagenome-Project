@@ -340,3 +340,9 @@ Shapefile used for linking gridded data to states: geoBoundaries-IND-ADM1.geojso
 Official population projection data. Population Projections for India and States, 2011–2036 — Report of the Technical Group on Population Projections, National Commission on Population, Ministry of Health & Family Welfare, Government of India. Report dated November 2019 (released July 2020).
 
 Livestock per capita uses different population data already in the source - most likely the same. 
+
+Resolutions (degrees) for gridded data
+Rainfall - 0.25
+Temperature - 0.5
+uvb - 1.0
+pm2.5 - 0.1

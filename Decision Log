@@ -334,3 +334,9 @@ Means: percentage of the state population living in urban areas. Source: officia
 n_missing
 
 Count of the ten variables missing for that state. 31 of 35 units are complete. Remaining gaps: Andaman (rainfall), Lakshadweep (rainfall, PM2.5), Andhra Pradesh (livestock), Jammu & Kashmir (infectious deaths).
+
+Shapefile used for linking gridded data to states: geoBoundaries-IND-ADM1.geojson.
+
+Official population projection data. Population Projections for India and States, 2011–2036 — Report of the Technical Group on Population Projections, National Commission on Population, Ministry of Health & Family Welfare, Government of India. Report dated November 2019 (released July 2020).
+
+Livestock per capita uses different population data already in the source - most likely the same. 

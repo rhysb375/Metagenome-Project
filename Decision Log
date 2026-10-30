@@ -268,3 +268,54 @@ Decided on much more lenient filtering - only filtered out BioProjects on these 
 
 Also looked for Checksums through API calls to see if there was direct deposition of some BioProjects into others as stated in some BioProject research papers - no duplicated checksums MD5 found but this does not account for
 resequenced or recompressed FASTQ files.
+
+
+
+
+
+
+
+
+2026-10-30 Exposure variable decisions
+mean_temp_C
+
+Means: mean near-surface air temperature, °C, averaged over the state area and over the year. Source: CRU TS 4.10 gridded climatology (University of East Anglia), 0.5° monthly fields, 1901–2025. How calculated: monthly grid cells falling within each state boundary were averaged to a state monthly mean, then averaged across the 12 months to an annual value, then across 2015–2022. Validation against expected seasonal cycles.
+
+rainfall_mm
+
+Means: total annual rainfall in millimetres, averaged over the state area. Source: IMD 0.25° daily gridded rainfall netCDF, 1901–2024. How calculated: daily values summed over the calendar year per grid cell, then averaged across cells within the state. Andaman and Lakshadaweep have no values as grids that may be in the ocean or outside gauge network count as 0. Used min_count=1 to make sure missing values were not counted as "zero rain" in the averages over states. 
+uvb_kwh_m2_day
+
+Means: daily-mean UVB irradiance at the surface, kWh/m²/day. Source: NASA POWER, UV parameters, 2001–present, 1° resolution. How calculated: retrieved as 12 regional tiles (POWER enforces a 10°×10° request limit); overlapping tile edges de-duplicated; POWER's month-13 value used as the annual figure (verified equal to the mean of months 1–12 to four decimal places); cells averaged within each state. 
+
+pm25_mean
+
+Means: annual mean ambient PM2.5 concentration, µg/m³. Source: ⚠️ CONFIRM BEFORE LOGGING. Two candidates were evaluated and my records do not state which was used in the final file — ACAG V6.GL.02.04 (satellite-derived, 1998–2023) or UrbanEmissions state averages (1998–2020). Check your own notes; the year coverage differs and that matters.
+
+poor_sanitation_pct
+
+Means: percentage of households without an improved sanitation facility. Source: National Family Health Survey state factsheets, round 4 (fieldwork 2015–16) and round 5 (fieldwork 2019–21). How calculated: NFHS-4 assigned to 2016, NFHS-5 to 2020, then linearly interpolated between them and carried forward/backward to cover 2015–2022. Known issue, corrected: the government compendium table had its columns swapped. Detected by arithmetic impossibility, confirmed against the official compendium, and proven by population-weighting (corrected → 69.4%, matching the official 70.2%; as-printed → 48.3%, matching NFHS-4's 48.5%). Driver note: the 2016→2020 change tracks Swachh Bharat Mission rollout, not urbanisation (r = −0.54 with urban %).
+
+livestock_per_capita
+
+Means: total livestock head per person. Source: 19th (2012) and 20th (2019) Livestock Censuses, DAHD. How calculated: all species summed as raw head counts including poultry, with no TLU or PCU weighting, divided by state population. This deliberately matches Emmanuel's FAOSTAT-based metric so the two models are comparable. Interpolation: linear between 2012 and 2019, carried forward to 2022 (no census after 2019). Boundary decisions: Andhra Pradesh dropped — its 2012 row still contains Telangana, so 2012→2019 shows a false 39% collapse. Telangana held flat from its single 2019 measurement (flagged carried_back_no_2012). Validation: every species total matched the printed census total exactly; grand total within 0.026%.
+
+pct_population_affected
+
+Means: percentage of the state population recorded as affected by flooding per year. Source: EM-DAT international disaster database. (Note: the earlier coverage matrix lists a CWC flood damage table as an alternative — EM-DAT is what is in the final file.) How calculated: state identified from EM-DAT's structured GADM Admin Units field rather than its free-text Location column — GADM IDs take the form IND.<n>.<m>_1 and <n> indexes states alphabetically. Key decision: EM-DAT reports one "Total Affected" figure per event even when a flood hits ten states. Copying it to every state produced impossible values (Nagaland at 1088% of its population). The affected count is therefore split between the states hit, in proportion to their populations. No row now exceeds 100%. Zero-fill: states absent from EM-DAT are 0, not missing — no recorded flood event is a real zero.
+
+infectious_pct_of_certified_deaths
+
+Means: deaths from "Certain Infectious and Parasitic Diseases" as a percentage of that state's medically certified deaths. Source: Medical Certification of Cause of Death (MCCD) annual reports, Statement 3.6, 2015–2022 (8 reports). Why a share and not a rate: only ~22.5% of Indian deaths are medically certified, and coverage ranges from Bihar (3.4%) to Goa and Manipur (100%). Infectious deaths per head of population would mostly measure certification coverage. Taking the share of a state's own certified deaths cancels most of that out. Why the column is found, not hard-coded: Statement 3.6 lists cause groups in rank order, and infectious disease moves between years (2nd in 2019, 4th in 2020–21, 3rd in 2022); the number of groups also changes. The parser locates the right column each year by matching the report's own stated national figure. Correction made: the 2018 column was initially wrong (Assam read 5.9 against 26.3/27.2/25.7 in adjacent years). Fixed; adjacent-year correlations are now +0.67 to +0.94. Replaces: GBD modelled infectious-disease estimates, which were dropped because a modelled variable cannot serve as an independent measurement. Missing: Jammu & Kashmir (not reported).
+
+tourism_per_person
+
+Means: domestic tourist visits per resident per year. Dimensionless. Source: RBI Handbook of Statistics on Indian States, Table 13, 2011–2024. How calculated: annual domestic tourist visits divided by state population. Excludes: foreign tourist arrivals.
+
+urban_pct_2011_2024
+
+Means: percentage of the state population living in urban areas. Source: official population projections, 2011–2036. Validation: this variable was used as the hold-out test for whether interpolating census variables is acceptable, since it has an annual series.
+
+n_missing
+
+Count of the ten variables missing for that state. 31 of 35 units are complete. Remaining gaps: Andaman (rainfall), Lakshadweep (rainfall, PM2.5), Andhra Pradesh (livestock), Jammu & Kashmir (infectious deaths).

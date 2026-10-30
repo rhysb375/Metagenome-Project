@@ -235,5 +235,36 @@ The same physical samples deposited under more than one accession receive double
 
 Unclear — cannot assess
 Assigning a value where the source is silent converts an unknown into a datum. 
+
+
+
+
+
+
+
 Because incomplete reporting is not randomly distributed across studies, the resulting error is systematic.
 Retaining a distinct category preserves this distinction and yields a quantifiable measure of reporting completeness.
+
+
+
+
+
+
+
+
+2026-10-30 How I dealt with states in exposure variable preprocessing. 
+DNH & DD — two tiny territories that became one in 2020. I added them together for every year.
+Telangana — broke away from Andhra Pradesh in 2014. Only one livestock count exists for it (2019), so I used that same number for every year.
+Andhra Pradesh — its 2012 count included Telangana, its 2019 count didn’t. So it looks like it lost animals when really it just lost land. I dropped it.
+Ladakh — broke away from J&K in 2019, never counted on its own. Dropped.
+
+Of those, only Telangana has metagenome data, so it’s the only one that reaches the model.
+
+
+2026-10-30 Dealing with BioProject filtering
+Decided on much more lenient filtering - only filtered out BioProjects on these grounds: 
+- Studies filtered for viromes
+- Used whoel genome amplification 
+
+Also looked for Checksums through API calls to see if there was direct deposition of some BioProjects into others as stated in some BioProject research papers - no duplicated checksums MD5 found but this does not account for
+resequenced or recompressed FASTQ files.

@@ -346,3 +346,8 @@ Rainfall - 0.25
 Temperature - 0.5
 uvb - 1.0
 pm2.5 - 0.1
+
+
+
+11/11/2026 Partial Pooling Decisions for Clinical Isolates
+Because ICMR AMRSN clinical isolates report counts of isolates susceptible / total isolates. I used n resistant = n tested - n susceptible. n being count of isolates. This counts intermediate isolates with resistant isolates. 

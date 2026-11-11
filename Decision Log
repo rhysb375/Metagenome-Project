@@ -351,3 +351,19 @@ pm2.5 - 0.1
 
 11/11/2026 Partial Pooling Decisions for Clinical Isolates
 Because ICMR AMRSN clinical isolates report counts of isolates susceptible / total isolates. I used n resistant = n tested - n susceptible. n being count of isolates. This counts intermediate isolates with resistant isolates. 
+
+
+
+
+11/11/2026 Analysis of correlations between exposure variables
+Two letter codes used for states: 
+"andaman and nicobar": "AN", "andhra pradesh": "AP", "arunachal pradesh": "AR",
+    "assam": "AS", "bihar": "BR", "chandigarh": "CH", "chhattisgarh": "CT",
+    "delhi": "DL", "dnh and dd": "DH", "goa": "GA", "gujarat": "GJ",
+    "haryana": "HR", "himachal pradesh": "HP", "jammu and kashmir": "JK",
+    "jharkhand": "JH", "karnataka": "KA", "kerala": "KL", "ladakh": "LA",
+    "lakshadweep": "LD", "madhya pradesh": "MP", "maharashtra": "MH",
+    "manipur": "MN", "meghalaya": "ML", "mizoram": "MZ", "nagaland": "NL",
+    "odisha": "OR", "puducherry": "PY", "punjab": "PB", "rajasthan": "RJ",
+    "sikkim": "SK", "tamil nadu": "TN", "telangana": "TG", "tripura": "TR",
+    "uttar pradesh": "UP", "uttarakhand": "UK", "west bengal": "WB",

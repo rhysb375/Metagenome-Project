@@ -367,3 +367,9 @@ Two letter codes used for states:
     "odisha": "OR", "puducherry": "PY", "punjab": "PB", "rajasthan": "RJ",
     "sikkim": "SK", "tamil nadu": "TN", "telangana": "TG", "tripura": "TR",
     "uttar pradesh": "UP", "uttarakhand": "UK", "west bengal": "WB",
+
+12/11/2026 Partial Pooling Decisions for Clinical Isolates
+n_resistant | trials(n_tested) ~ 1 + (1 | rc) + (1 | year) + (1 | rc:year)
+Used this format in R for fixed and random effects. 1 is an overall resistance level for each drug-bug combination across all centres and all years. 
+The random effects are: varying by regional centre, a regional centre will look at its persistent tendency to be above or below the average resistance for a specific drug bug combination across all centres and all years (1 | rc), varying by year, that regional centre for that year will be offset by how much a specific year differs compared to all other years for a specific drug bug combination (1 | year).
+Finally, (1 | rc:year) adjusts for how odd a specific resistance level was for 1 regional centre in 1 year and adjusts it towards the overall resistance level for a particular drug bug combination across all centres and all years.

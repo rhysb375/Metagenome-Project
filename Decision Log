@@ -378,3 +378,6 @@ Finally, (1 | rc:year) adjusts for how odd a specific resistance level was for 1
 23/11/2026 biorxiv preprint literature advanced search query
 Tried (in title / abstract only) between 01/01/2010 and 01/06/2026 (Any word match selected) in subject area Microbiology:
 india metagenome wastewater shotgun. Hits received: 0.
+india metagenome sewage shotgun. Hits received: 0. 
+india metagenome gut shotgun. Hits received: 2. Hits excluded: 2. Hits included: 0. "Genetic diversity and mother-child overlap of the gut associated 2 3 4 microbiota determined by reduced genome sequencing" - Whole genome shotgun samples claimed to be poor quality.
+"Symbiont loss and gain, rather than co-diversification shapes honeybee gut microbiota diversity and function" - Not human gut. 

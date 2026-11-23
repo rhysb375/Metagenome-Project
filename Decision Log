@@ -376,17 +376,21 @@ Finally, (1 | rc:year) adjusts for how odd a specific resistance level was for 1
 
 
 23/11/2026 biorxiv preprint literature advanced search query
-Tried (in title / abstract only) between 01/01/2010 and 01/06/2026 ("All" word match selected) in subject area Microbiology:
+Tried (in title / abstract only) between 01/01/2010 and 23/11/2026 ("All" word match selected) in subject area Microbiology:
 india metagenome wastewater shotgun. Hits received: 0.
 india metagenome sewage shotgun. Hits received: 0. 
-india metagenome gut shotgun. Hits received: 2. Hits excluded: 2. Hits included: 0. "Genetic diversity and mother-child overlap of the gut associated 2 3 4 microbiota determined by reduced genome sequencing" - Whole genome shotgun samples claimed to be poor quality.
-"Symbiont loss and gain, rather than co-diversification shapes honeybee gut microbiota diversity and function" - Not human gut. 
+india metagenome gut shotgun. Hits received: 2. Hits excluded: 2
+- Genetic diversity and mother-child overlap of the gut associated microbiota determined by reduced genome sequencing. - Poor WGS samples.
+- Symbiont loss and gain, rather than co-diversification shapes honeybee gut microbiota diversity and function. - Not human gut.
 
 india metagenome faecal shotgun. Hits received: 0.
-india metagenome fecal shotgun. Hits received: 1. Hits excluded: 1. Hits included: 0. "Genome-resolved house microbiome exhibits location-specific metabolic partitioning, and harbors hosts with clinically relevant antibiotic resistance genes" - Not human gut.
+india metagenome fecal shotgun. Hits received: 1. Hits excluded: 1. 
+- Genome-resolved house microbiome exhibits location-specific metabolic partitioning, and harbors hosts with clinically relevant antibiotic resistance genes. - Not human gut. 
 
 india metagenome effluent shotgun. Hits received: 0. 
 india metagenome stool shotgun. Hits received: 0.
+india metagenome gastrointestinal shotgun. Hits received: 0. 
+india metagenome intestin* shotgun. Hits received: 0.
 
 
 23/11/2026 PubMed advanced literature search query

@@ -381,3 +381,8 @@ india metagenome wastewater shotgun. Hits received: 0.
 india metagenome sewage shotgun. Hits received: 0. 
 india metagenome gut shotgun. Hits received: 2. Hits excluded: 2. Hits included: 0. "Genetic diversity and mother-child overlap of the gut associated 2 3 4 microbiota determined by reduced genome sequencing" - Whole genome shotgun samples claimed to be poor quality.
 "Symbiont loss and gain, rather than co-diversification shapes honeybee gut microbiota diversity and function" - Not human gut. 
+
+india metagenome faecal shotgun. Hits received: 0.
+india metagenome fecal shotgun. Hits received: 1. Hits excluded: 1. Hits included: 0. "Genome-resolved house microbiome exhibits location-specific metabolic partitioning, and harbors hosts with clinically relevant antibiotic resistance genes" - Not human gut.
+
+india metagenome effluent shotgun. Hits received: 0. 

@@ -400,3 +400,6 @@ Hits received: 3. Hits excluded: . Hits included: .
 23/11/2026 PMC advanced literature search query
 India[Title/Abstract] AND metagenom* AND shotgun AND (PRJNA* OR PRJEB* OR PRJDB* OR PRJNA OR PRJEB OR PRJDB) AND (gut OR stool OR faecal OR fecal OR intestinal OR sewage OR wastewater OR effluent) AND ("2010/01/01"[EDAT] : "2026/11/23"[EDAT]) 
 Hits received: 94. Hits excluded: . Hits included: . 
+
+26/11/2026 Scientific definition of wastewater being used
+A complex, dynamic, multi-origin microbial matrix collected from a municipal catchment area
